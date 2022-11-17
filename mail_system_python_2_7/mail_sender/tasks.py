@@ -1,14 +1,16 @@
-from urllib.parse import urljoin
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 
 from celery import shared_task
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMessage
 from django.template.loader import render_to_string
+from urlparse import urljoin
 
 from mail_system.settings import READ_MAIL_LINK, UNSUB_LINK
 
 
-def render_template(mail_info: dict, subject: str, body: str) -> tuple:
+def render_template(mail_info, subject, body):
     messages_list = []
 
     for mail, full_name in mail_info.items():
@@ -22,7 +24,7 @@ def render_template(mail_info: dict, subject: str, body: str) -> tuple:
     return tuple(messages_list)
 
 
-def send_custom_mass_mail(datatuple: tuple, fail_silently=False, auth_user=None,
+def send_custom_mass_mail(datatuple, fail_silently=False, auth_user=None,
                           auth_password=None, connection=None):
     connection = connection or get_connection(
         username=auth_user,
@@ -38,7 +40,7 @@ def send_custom_mass_mail(datatuple: tuple, fail_silently=False, auth_user=None,
 
 
 @shared_task
-def send_mails(mail_info: dict, subject, body) -> bool:
+def send_mails(mail_info, subject, body):
     messages = render_template(mail_info, subject, body)
     send_custom_mass_mail(messages)
     return True

@@ -1,0 +1,8 @@
+# python 2.7.15
+
+celery==4.4.7
+Django==1.11.29
+django-split-settings==0.3.0
+python-dotenv==0.18.0
+gunicorn==19.10.0
+psycopg2-binary==2.8.5
