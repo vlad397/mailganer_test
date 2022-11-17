@@ -1,0 +1,47 @@
+version: '3.3'
+
+volumes:
+  postgres_data:
+
+services:
+  db:
+    image: postgres:12.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+
+  rabbit:
+      restart: always
+      image: "rabbitmq:3-management"
+      env_file:
+        - ./.env
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+  
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A mail_system worker -l info
+    volumes:
+      - ./mail_system:/mail_system
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - rabbit
+      - backend
