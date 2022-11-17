@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import MailingUser, User
 
 
-def track_clicking(request, pk):
+def track_clicking(request, pk: int) -> HttpResponse:
     if request.method == 'GET':
         mailing_user = MailingUser.objects.get(pk=pk)
         if mailing_user:
@@ -12,7 +12,7 @@ def track_clicking(request, pk):
     return HttpResponse('Спасибо за просмотр!')
 
 
-def unsubscribe(request, mail):
+def unsubscribe(request, mail: str) -> HttpResponse:
     if request.method == 'GET':
         user = User.objects.get(email=mail)
         if user:

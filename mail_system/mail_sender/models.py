@@ -83,7 +83,7 @@ class MailingUser(models.Model):
 
 
 @receiver(post_save, sender=Mailing)
-def create_profile(sender, instance, created, **kwargs):
+def create_profile(sender: Mailing, instance: Mailing, created: bool, **kwargs) -> bool:
     if created:
         subject = instance.subject
         body = instance.body
@@ -100,3 +100,6 @@ def create_profile(sender, instance, created, **kwargs):
             send_mails.delay(mail_info, subject, body)
         else:
             send_mails.apply_async((mail_info, subject, body), eta=sending_time)
+        
+        return True
+    return False

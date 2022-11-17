@@ -59,4 +59,6 @@
 
 `sudo docker-compose exec backend python manage.py createsuperuser` *Для создания суперпользователя*
 
-Админка доступна по адресу http://127.0.0.1:8000/admin/ (NGINX в данном проекте не используется)
+`sudo docker-compose exec backend python manage.py collectstatic` *Для сбора статических файлов*
+
+Админка доступна по адресу http://127.0.0.1/admin/

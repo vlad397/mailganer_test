@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from mail_system.settings import READ_MAIL_LINK, UNSUB_LINK
 
 
-def render_template(mail_info: dict, subject, body):
+def render_template(mail_info: dict, subject: str, body: str) -> tuple:
     messages_list = []
 
     for mail, full_name in mail_info.items():
@@ -22,7 +22,7 @@ def render_template(mail_info: dict, subject, body):
     return tuple(messages_list)
 
 
-def send_custom_mass_mail(datatuple, fail_silently=False, auth_user=None,
+def send_custom_mass_mail(datatuple: tuple, fail_silently=False, auth_user=None,
                           auth_password=None, connection=None):
     connection = connection or get_connection(
         username=auth_user,
@@ -38,7 +38,7 @@ def send_custom_mass_mail(datatuple, fail_silently=False, auth_user=None,
 
 
 @shared_task
-def send_mails(mail_info: dict, subject, body):
+def send_mails(mail_info: dict, subject, body) -> bool:
     messages = render_template(mail_info, subject, body)
     send_custom_mass_mail(messages)
     return True

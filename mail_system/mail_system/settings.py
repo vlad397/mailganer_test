@@ -21,7 +21,7 @@ ALLOWED_HOSTS = [
     "backend",
 ]
 
-WEB_HOST = os.getenv('WEB_HOST', 'http://127.0.0.1:8000/')
+WEB_HOST = os.getenv('WEB_HOST', 'http://127.0.0.1:80/')
 UNSUB_BASE_LINK = os.getenv('UNSUB_BASE_LINK', 'unsubscribe/')
 READ_MAIL_BASE_LINK = os.getenv('READ_MAIL_BASE_LINK', 'read_mail/')
 UNSUB_LINK = urljoin(WEB_HOST, UNSUB_BASE_LINK)
@@ -99,6 +99,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 include(
     "components/database.py",
